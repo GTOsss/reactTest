@@ -1,0 +1,27 @@
+.new {
+    background: #d4d4d4;
+    padding: 2px 10px 8px 10px;
+    margin-bottom: 10px;
+}
+
+.new h1 {
+    background-color: #e8e8e8;
+    text-align: center;
+    cursor: pointer;
+}
+
+.new h1:hover {
+    background-color: #f1f1f1;
+}
+
+.news-readmore {
+    display: block;
+    color: #001948;
+    width: 100%;
+    margin: 0;
+    text-align: right;
+}
+
+.none {
+    display: none;
+}
