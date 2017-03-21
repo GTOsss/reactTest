@@ -2,30 +2,50 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
-import {ScreenNews} from './Card';
+import {ScreenCards} from './Card'
+import LocalStorage from './LocalStorage'
 
-let news = [
-    { title: 'Title 1', text: '1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis dignissimos eaque esse explicabo in libero nisi officiis quo saepe voluptatem. Dicta dolorem dolorum in itaque maiores quibusdam sed. Alias atque beatae consequuntur, deleniti dignissimos esse excepturi fugiat inventore magni neque officiis optio possimus quae quidem reiciendis rem sequi ullam unde?'},
-    { title: 'Title 2', text: '2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos facere iste laboriosam laborum nemo non praesentium provident voluptatem voluptates. Ex!'},
-    { title: 'Title 3', text: '3. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, beatae deserunt eum ex excepturi fugiat hic molestiae mollitia, odio pariatur praesentium quae, sunt tempore ut vel. Culpa dolorum expedita molestias, nulla placeat reprehenderit! Assumenda debitis delectus eius facilis fuga non perspiciatis quo sit veritatis! Accusantium, at commodi eaque incidunt laboriosam nesciunt quae quos sunt velit vitae? Accusantium aut dicta exercitationem, laborum mollitia natus quis tenetur? Adipisci, aliquid architecto beatae eum harum ipsum modi necessitatibus nesciunt nihil. A cum cupiditate ex excepturi labore, magni nisi odio recusandae sequi suscipit! Asperiores autem dicta in inventore laboriosam magnam quo quod temporibus voluptate voluptatem.'}
-];
-
-class Card extends React.Component {
-    render() {
-        console.log();
-        return (
-            <div className="label-title-card">
-                <span className="title-card"></span>
-                <span className="title-content"></span>
-            </div>
-        );
-    }
-}
+let numberBoard = -1, numberCard = -1;
 
 class Board extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    deleteBoard(e) {
+        this.props.updateStateBoards(LocalStorage.RemoveBoard(this.props.idN));
+    }
+
+
+    addCard(e) {
+        numberCard++;
+
+        LocalStorage.SetStorage('numberCard', numberCard);
+        this.refs.ScreenCards.setState((prevProps)=>{
+            prevProps.cards.push({title: 'Title', text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus.'})
+        });
+    }
+
     render() {
         return (
-            <div className="col-md-2">
+            <div className="col-md-3">
+                <div className="board">
+                    <h4>{this.props.title + ' ' + this.props.idN}</h4>
+                    <ScreenCards cards={this.props.cards} ref="ScreenCards" boardId={this.props.idN}/>
+                    <div className="btn-group-vertical form-control board-btn-group">
+                        <input type="button"
+                               value="Add card"
+                               className="btn btn-default form-control"
+                               ref="BtnAddBoard"
+                               onClick={(e) => this.addCard(e)}/>
+                        <input type="button"
+                               value="Delete board"
+                               className="btn btn-danger form-control"
+                               ref="BtnAddBoard"
+                               onClick={(e) => this.deleteBoard(e)}/>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -33,29 +53,73 @@ class Board extends React.Component {
 
 class Table extends React.Component {
 
-    EventHandlerClick() {
-        let objPushEl = {
-            title: 'Title ' + (this.refs.newsRef.state.news.length + 1),
-            text: (this.refs.newsRef.state.news.length + 1) + '. texttexttexttexttextte xttexttextt exttext tex ttexttextt exttexttexttextt exttexttexttexttexttex ttexttext texttexttex ttexttextexttext tex ttexttextt exttexttexttextt exttexttexttexttexttex ttexttext texttexttex ttexttext'
+    constructor(props) {
+        super(props);
+        let boards = LocalStorage.GetStorage('boards');
+        if (boards === undefined || boards === null) {
+            boards = [];
         }
+        this.state = {boards: boards};
+        numberBoard = LocalStorage.GetStorage('numberBoard');
 
-        let arrayState = this.refs.newsRef.state.news.slice();
-        arrayState.push(objPushEl);
-        this.refs.newsRef.setState({news: arrayState});
-        console.log(this.refs.newsRef.state.news);
+        numberCard = LocalStorage.GetStorage('numberCard');
+
+    }
+
+    componentWillUpdate() {
+        LocalStorage.SetStorage('numberBoard', numberBoard);
+    }
+
+    addBoard() {
+        numberBoard++;
+        LocalStorage.AddBoard(numberBoard);
+        this.setState((prevState) => {
+            prevState.boards.push({id: numberBoard, cards: []});
+        });
+    }
+
+    updateStateBoards(boards) {
+        this.setState({boards: boards});
     }
 
     render() {
+
+        let boardReactElements = this.state.boards.map((el) => {
+            return (
+                <Board updateStateBoards={(boards)=> this.updateStateBoards(boards)} key={el.id} idN={el.id} cards={el.cards} title="Title"  />
+            );
+        });
+
         return (
             <div className="row">
-                <div className="col-md-3">
-                    <ScreenNews news={news} ref="newsRef"/>
-                </div>
+                {boardReactElements}
                 <input type="button"
-                       value="add object"
-                       className="btn btn-primary"
-                       ref="BtnAddBoard"
-                       onClick={() => this.EventHandlerClick()}/>
+                    value="Add Board"
+                    className="btn btn-default btn-add-board"
+                    onClick={() => this.addBoard()}
+                />
+                <DevelopTools />
+            </div>
+        );
+    }
+}
+
+class DevelopTools extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return(
+            <div className="btn-group-vertical">
+                <input type="button"
+                       className="btn btn-default"
+                       value="ClearLocalStorage"
+                        onClick={() => LocalStorage.ClearStorage()}/>
+                <input type="button"
+                       className="btn btn-default"
+                       value="LogLocalStorage"
+                        onClick={()=> LocalStorage.LogStorage()}/>
             </div>
         );
     }

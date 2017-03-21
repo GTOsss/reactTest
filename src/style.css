@@ -1,27 +1,99 @@
+.none { display: none;  }
+
+.row {
+    min-height: 700px;
+    background-repeat: no-repeat;
+    background: #10542c; /* Old browsers */
+    background: -moz-linear-gradient(-45deg, #10542c 0%, #60b27f 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg, #10542c 0%,#60b27f 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg, #10542c 0%,#60b27f 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#10542c', endColorstr='#60b27f',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
 .new {
     background: #d4d4d4;
     padding: 2px 10px 8px 10px;
     margin-bottom: 10px;
+    animation: cardAnim 800ms;
 }
 
-.new h1 {
+.new h3 {
     background-color: #e8e8e8;
     text-align: center;
     cursor: pointer;
 }
 
-.new h1:hover {
+.new h3:hover {
     background-color: #f1f1f1;
 }
 
-.news-readmore {
-    display: block;
-    color: #001948;
-    width: 100%;
-    margin: 0;
-    text-align: right;
+.board {
+    background-color: #6c6c6c;
+    padding: 10px;
+    margin-top: 10px;
+    animation: boardAnim 400ms;
 }
 
-.none {
-    display: none;
+.board-btn-group {
+    height: 80px;
+    background-color: rgb(40, 56, 77);
+}
+
+.btn-add-board {
+    margin: 10px 0 0 20px;
+}
+
+h4 {
+    margin: 0 0 4px 0;
+}
+
+.card-p {
+    background-color: #c5c5c5;
+    box-shadow: #000 0 0 8px inset;
+    -webkit-transition: 1s ;
+    -moz-transition:  1s ;
+    -ms-transition:  1s ;
+    -o-transition:  1s ;
+    transition:  1s ;
+    padding: 18px 10px 18px 10px;
+    border-bottom: 2px dotted #000000;
+    border-top: 2px dotted #000000;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.card-p-all {
+    background-color: #f6f6f6;
+    box-shadow: #000 0 0 4px;
+    padding: 18px 10px 18px 10px;
+    -webkit-transition: 1s ;
+    -moz-transition:  1s ;
+    -ms-transition:  1s ;
+    -o-transition:  1s ;
+    transition:  1s ;
+    border-bottom: 2px dotted #000000;
+    border-top: 2px dotted #000000;
+}
+
+@keyframes cardAnim {
+    0% {
+        opacity: 0;
+
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes boardAnim {
+    0% {
+        width: 0%;
+        opacity: 0;
+    }
+    100%  {
+        width: 100%;
+        opacity: 1;
+    }
 }
