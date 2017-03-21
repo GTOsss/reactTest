@@ -6,7 +6,6 @@ export class ScreenCards extends React.Component {
     constructor(props) {
         super(props);
         this.state = {text: '', visible: false, cards: this.props.cards};
-        this.state.cards = [];
     }
 
     componentWillUpdate() {

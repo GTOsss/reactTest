@@ -63,7 +63,6 @@ class Table extends React.Component {
         numberBoard = LocalStorage.GetStorage('numberBoard');
 
         numberCard = LocalStorage.GetStorage('numberCard');
-
     }
 
     componentWillUpdate() {
@@ -74,7 +73,7 @@ class Table extends React.Component {
         numberBoard++;
         LocalStorage.AddBoard(numberBoard);
         this.setState((prevState) => {
-            prevState.boards.push({id: numberBoard, cards: []});
+            prevState.boards.push({id: numberBoard});
         });
     }
 
@@ -85,8 +84,12 @@ class Table extends React.Component {
     render() {
 
         let boardReactElements = this.state.boards.map((el) => {
+            let cards = LocalStorage.GetStorage('cardsBoard'+el.id);
+            if (cards === null || cards === undefined) {
+                cards = [];
+            }
             return (
-                <Board updateStateBoards={(boards)=> this.updateStateBoards(boards)} key={el.id} idN={el.id} cards={el.cards} title="Title"  />
+                <Board updateStateBoards={(boards)=> this.updateStateBoards(boards)} key={el.id} idN={el.id} cards={cards} title="Title"  />
             );
         });
 
