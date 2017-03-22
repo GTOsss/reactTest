@@ -9,22 +9,23 @@ let numberBoard = -1, numberCard = -1;
 
 class Board extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     deleteBoard(e) {
         this.props.updateStateBoards(LocalStorage.RemoveBoard(this.props.idN));
+        LocalStorage.RemoveElement('cardsBoard'+this.props.idN);
     }
 
 
     addCard(e) {
         numberCard++;
-
         LocalStorage.SetStorage('numberCard', numberCard);
-        this.refs.ScreenCards.setState((prevProps)=>{
-            prevProps.cards.push({title: 'Title', text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus.'})
-        });
+        console.log(this.props);
+        let cards = this.refs.ScreenCards.props.cards;
+        if(cards === undefined || cards === null) {
+            cards = [];
+        }
+        cards.push({boardId: this.props.idN, title: 'Title', text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus.'});
+        LocalStorage.SetStorage('cardsBoard' + this.props.idN, cards);
+        this.refs.ScreenCards.setState({cards: cards});
     }
 
     render() {
@@ -32,7 +33,9 @@ class Board extends React.Component {
             <div className="col-md-3">
                 <div className="board">
                     <h4>{this.props.title + ' ' + this.props.idN}</h4>
-                    <ScreenCards cards={this.props.cards} ref="ScreenCards" boardId={this.props.idN}/>
+                    <ScreenCards cards={this.props.cards}
+                                 ref="ScreenCards"
+                                 boardId={this.props.idN} />
                     <div className="btn-group-vertical form-control board-btn-group">
                         <input type="button"
                                value="Add card"
@@ -89,7 +92,10 @@ class Table extends React.Component {
                 cards = [];
             }
             return (
-                <Board updateStateBoards={(boards)=> this.updateStateBoards(boards)} key={el.id} idN={el.id} cards={cards} title="Title"  />
+                <Board updateStateBoards={(boards)=> this.updateStateBoards(boards)}
+                       key={el.id}
+                       idN={el.id}
+                       cards={cards} title="Title"  />
             );
         });
 
@@ -108,9 +114,6 @@ class Table extends React.Component {
 }
 
 class DevelopTools extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return(

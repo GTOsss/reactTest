@@ -8,14 +8,15 @@ export class ScreenCards extends React.Component {
         this.state = {text: '', visible: false, cards: this.props.cards};
     }
 
-    componentWillUpdate() {
-        LocalStorage.SetStorage('cardsBoard' + this.props.boardId, this.state.cards);
-    }
-
     render() {
         let ReactElements = this.state.cards.map((el, i) => {
             return (
-                <Card title={el.title} text={el.text} key={i} />
+                <Card title={el.title}
+                      text={el.text}
+                      key={i}
+                      index={i}
+                      boardId={this.props.boardId}
+                      updateCards={(cards)=>this.setState({cards: cards})}/>
             );}
         );
         return <div>{ReactElements}</div>;
@@ -29,6 +30,10 @@ export class Card extends React.Component {
         this.state = {text: this.props.text, visible: false};
     }
 
+    deleteCard(e) {
+        this.props.updateCards(LocalStorage.RemoveCard('cardsBoard'+this.props.boardId, this.props.index));
+    }
+
     render() {
         return (
             <div className="new text-right">
@@ -38,7 +43,8 @@ export class Card extends React.Component {
                         onClick={()=> this.setState({visible: !this.state.visible})}>
                     </span>
                     <span className="glyphicon glyphicon-pencil btn btn-primary"></span>
-                    <span className="glyphicon glyphicon-remove btn btn-danger"></span>
+                    <span className="glyphicon glyphicon-remove btn btn-danger"
+                    onClick={(e)=> this.deleteCard(e)}></span>
                 </div>
                 <h3 onClick={()=> this.setState({visible: !this.state.visible, text: this.props.text})}>{this.props.title}</h3>
                 <p className={"text-left " + (this.state.visible ? "card-p-all" : "card-p")}>{this.state.visible ? this.state.text : this.state.text.substr(0, 100) + ' ...'}</p>
@@ -47,4 +53,3 @@ export class Card extends React.Component {
     }
 
 }
-

@@ -15,10 +15,21 @@ export let LocalStorage = {
         console.log(localStorage);
     },
 
+    RemoveElement: (key) => {
+        localStorage.removeItem(key);
+    },
+
+    RemoveCard: (key, index) => {
+        let cards = LocalStorage.GetStorage(key);
+        cards.splice(index, 1);
+        LocalStorage.SetStorage(key, cards);
+        return cards;
+    },
+
     RemoveBoard: (id) => {
       let boards = LocalStorage.GetStorage('boards');
       for(let i = 0; i < boards.length; i++){
-          if (boards != undefined && boards[i].id === id) {
+          if (boards !== undefined && boards[i].id === id) {
               boards.splice(i, 1);
               LocalStorage.SetStorage('boards', boards);
               return boards;
@@ -38,4 +49,3 @@ export let LocalStorage = {
 }
 
 export default LocalStorage
-
