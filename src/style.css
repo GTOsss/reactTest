@@ -79,6 +79,30 @@ h4 {
     border-top: 2px dotted #000000;
 }
 
+.card-edit-textarea {
+    background-color: #f6f6f6;
+    box-shadow: #000 0 0 4px;
+    padding: 4px 8px 4px 8px;
+    -webkit-transition: 1s ;
+    -moz-transition:  1s ;
+    -ms-transition:  1s ;
+    -o-transition:  1s ;
+    transition:  1s ;
+    border-bottom: 2px dotted #000000;
+    border-top: 2px dotted #000000;
+    width: 100%;
+    box-sizing: border-box;
+    height: 180px;
+    resize: none;
+}
+
+.input-text-title {
+    width: 100%;
+    margin: 10px 0 10px 0;
+    height: 24px;
+    padding: 4px;
+}
+
 @keyframes cardAnim {
     0% {
         opacity: 0;

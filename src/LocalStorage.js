@@ -13,6 +13,7 @@ export let LocalStorage = {
 
     LogStorage: () => {
         console.log(localStorage);
+        // console.log(LocalStorage.GetStorage);
     },
 
     RemoveElement: (key) => {
@@ -24,6 +25,13 @@ export let LocalStorage = {
         cards.splice(index, 1);
         LocalStorage.SetStorage(key, cards);
         return cards;
+    },
+
+    UpdateCard: (key, index, title, text) => {
+        let cards = LocalStorage.GetStorage(key);
+        cards[index].title = title;
+        cards[index].text = text;
+        LocalStorage.SetStorage(key, cards);
     },
 
     RemoveBoard: (id) => {
