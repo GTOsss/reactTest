@@ -13,7 +13,6 @@ export let LocalStorage = {
 
     LogStorage: () => {
         console.log(localStorage);
-        // console.log(LocalStorage.GetStorage);
     },
 
     RemoveElement: (key) => {

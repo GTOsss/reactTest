@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
-import {ScreenCards} from './Card'
-import LocalStorage from './LocalStorage'
+import {ScreenCards} from './Card';
+import LocalStorage from './LocalStorage';
 
 let numberBoard = -1, numberCard = -1;
 
@@ -17,7 +17,7 @@ class Board extends React.Component {
     numberCard++;
     LocalStorage.SetStorage('numberCard', numberCard);
     console.log(this.props);
-    let cards = this.refs.ScreenCards.props.cards;
+    let cards = this.refs.ScreenCards.state.cards;
     if (cards === undefined || cards === null) {
       cards = [];
     }
@@ -95,7 +95,8 @@ class Table extends React.Component {
         <Board updateStateBoards={(boards) => this.updateStateBoards(boards)}
                key={el.id}
                idN={el.id}
-               cards={cards} title="Title"/>
+               cards={cards}
+               title="Title"/>
       );
     });
 
