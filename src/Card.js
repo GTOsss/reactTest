@@ -1,30 +1,7 @@
 import React from 'react';
 import LocalStorage from './LocalStorage';
 
-export class ScreenCards extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {text: '', visible: false, cards: this.props.cards};
-    }
-
-    render() {
-        let ReactElements = this.state.cards.map((el, i) => {
-            return (
-                <Card title={el.title}
-                      text={el.text}
-                      key={i}
-                      index={i}
-                      boardId={this.props.boardId}
-                      updateCards={(cards)=>this.setState({cards: cards})}/>
-            );}
-        );
-        return <div>{ReactElements}</div>;
-    }
-}
-
 export class Card extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {text: this.props.text, title: this.props.title, visible: false, edit: false};
@@ -84,8 +61,8 @@ export class Card extends React.Component {
                         ref="text"></textarea>
                 </div>
             </div>
-
         );
     }
-
 }
+
+export default Card;
