@@ -1,5 +1,8 @@
 import React from 'react';
-import LocalStorage from './LocalStorage';
+import LocalStorage from '../local-storage';
+import * as actions from '../actions';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 export class Card extends React.Component {
     constructor(props) {
@@ -8,7 +11,8 @@ export class Card extends React.Component {
     }
 
     deleteCard(e) {
-        this.props.updateCards(LocalStorage.RemoveCard('cardsBoard'+this.props.boardId, this.props.index));
+      LocalStorage.RemoveCard('cardsBoard'+this.props.boardId, this.props.index);
+      this.props.cardsChange(this.props.boardId);
     }
 
     editCard(e) {
@@ -65,4 +69,16 @@ export class Card extends React.Component {
     }
 }
 
-export default Card;
+function mapStateToProps(state) {
+    return {
+        cards: state.cards
+    };
+}
+
+function mapDispachToProps(dispach) {
+    return {
+        cardsChange: bindActionCreators(actions.cardsChange, dispach)
+    }
+}
+
+export default connect(mapStateToProps, mapDispachToProps)(Card);

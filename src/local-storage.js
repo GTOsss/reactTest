@@ -35,6 +35,7 @@ export let LocalStorage = {
 
     RemoveBoard: (id) => {
       let boards = LocalStorage.GetStorage('boards');
+      LocalStorage.RemoveElement('cardsBoard' + id);
       for(let i = 0; i < boards.length; i++){
           if (boards !== undefined && boards[i].id === id) {
               boards.splice(i, 1);

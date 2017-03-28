@@ -1,34 +1,41 @@
 import React from 'react';
-import LocalStorage from './LocalStorage';
-import ScreenCards from './ScreenCards';
+import LocalStorage from '../local-storage';
+import ScreenCards from './screen-cards';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
+import { bindActionCreators } from 'redux';
 
 export let numberCard = {
   value: -1
 };
 
-export class Board extends React.Component {
+class Board extends React.Component {
   deleteBoard(e) {
-    this.props.updateStateBoards(LocalStorage.RemoveBoard(this.props.idN));
-    LocalStorage.RemoveElement('cardsBoard' + this.props.idN);
+    this.props.boardsChange(LocalStorage.RemoveBoard(this.props.idN));
   }
+
   addCard(e) {
     numberCard.value++;
+
     LocalStorage.SetStorage('numberCard', numberCard.value);
-    console.log(this.props);
-    let cards = this.refs.ScreenCards.state.cards;
-    if (cards === undefined || cards === null) {
-      cards = [];
-    }
-    cards.push({
+    let newCards = [];
+    let boardId = this.props.idN;
+    this.props.cardsObj.forEach((el) => {
+      if(el.idBoard === boardId) {
+        newCards = el.cards;
+      }
+    });
+
+    newCards.push({
       boardId: this.props.idN,
       title: 'Title',
       text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi, distinctio dolor hic laboriosam obcaecati officia. Aut commodi corporis minus.'
     });
-    LocalStorage.SetStorage('cardsBoard' + this.props.idN, cards);
-    this.refs.ScreenCards.setState({cards: cards});
+    LocalStorage.SetStorage('cardsBoard' + this.props.idN, newCards);
+    this.props.cardsChange(this.props.idN);
   }
 
-  render() {
+  render()  {
     return (
       <div className="col-md-3">
         <div className="board">
@@ -54,4 +61,20 @@ export class Board extends React.Component {
   }
 }
 
-export default Board;
+function mapStateToProps(state) {
+  return {
+    title: state.board.title,
+    cardsObj: state.screenCards.screensCard
+  };
+}
+
+function mapDispachToProps(dispach) {
+  return {
+    boardsChange: bindActionCreators(actions.boardsChange, dispach),
+    cardsChange: bindActionCreators(actions.cardsChange, dispach)
+  }
+}
+
+export default connect(mapStateToProps, mapDispachToProps)(Board);
+
+
