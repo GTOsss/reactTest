@@ -38,9 +38,9 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispachToProps(dispach) {
+function mapDispachToProps(dispatch) {
   return {
-    cardsChange: bindActionCreators(actions.cardsChange, dispach)
+    cardsChange: bindActionCreators(actions.cardsChange, dispatch)
   }
 }
 

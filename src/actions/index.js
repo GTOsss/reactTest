@@ -17,3 +17,15 @@ export function cardsChange(idBoard, cards) {
     }
   }
 }
+
+export function cardSave(idBoard, idCard, title, text) {
+  return {
+    type: 'SAVE_CARD',
+    payload: {
+      idBoard: idBoard,
+      idCard: idCard,
+      title: title,
+      text: text
+    }
+  }
+}

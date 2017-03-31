@@ -31,10 +31,6 @@ class Table extends React.Component {
 
   render() {
     let boardReactElements = this.props.boards.map((el) => {
-      // let cards = LocalStorage.GetStorage('cardsBoard' + el.id);
-      // if (cards === null || cards === undefined) {
-      //   cards = [];
-      // }
       return (
         <Board key={el.id}
                idN={el.id}
